@@ -1,0 +1,58 @@
+@model BloodDonationManagementSystem.Models.Donor
+
+@{
+    ViewData["Title"] = "Create Donor";
+}
+
+<h2>Create Donor</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div style="color:red;">
+        @foreach (var value in ViewData.ModelState.Values)
+        {
+            foreach (var error in value.Errors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        }
+    </div>
+}
+
+<form method="post">
+
+    <p>
+        <label>Full Name</label><br />
+        <input type="text" name="FullName" value="@Model?.FullName" />
+    </p>
+
+    <p>
+        <label>Blood Group</label><br />
+        <input type="text" name="BloodGroup" value="@Model?.BloodGroup" />
+    </p>
+
+    <p>
+        <label>Contact No</label><br />
+        <input type="text" name="ContactNo" value="@Model?.ContactNo" />
+    </p>
+
+    <p>
+        <label>City</label><br />
+        <input type="text" name="City" value="@Model?.City" />
+    </p>
+
+    <p>
+        <label>Last Donation Date</label><br />
+        <input type="date" name="LastDonationDate"
+               value="@(Model?.LastDonationDate?.ToString("yyyy-MM-dd"))" />
+    </p>
+
+    <p>
+        <input type="submit" value="Save" />
+    </p>
+
+</form>
+
+<p>
+    <a href="/Donors">Back to List</a>
+</p>
