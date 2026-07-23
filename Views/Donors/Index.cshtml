@@ -4,14 +4,16 @@
     ViewData["Title"] = "Donor List";
 }
 
-<h2>Donor List</h2>
+<h2 class="mt-4 mb-3 text-center text-danger">Blood Donor List</h2>
 
 <p>
-    <a href="/Donors/Create">Add New Donor</a>
+    <a href="/Donors/Create" class="btn btn-success">
+        Add New Donor
+    </a>
 </p>
 
-<table border="1" cellpadding="8">
-    <thead>
+<table class="table table-bordered table-hover table-striped">
+    <thead class="table-danger">
         <tr>
             <th>Donor ID</th>
             <th>Full Name</th>
@@ -19,11 +21,12 @@
             <th>Contact No</th>
             <th>City</th>
             <th>Last Donation Date</th>
-            <th>Action</th>
+            <th width="260">Action</th>
         </tr>
     </thead>
 
     <tbody>
+
         @foreach (var item in Model)
         {
             <tr>
@@ -33,30 +36,50 @@
                 <td>@item.ContactNo</td>
                 <td>@item.City</td>
                 <td>@item.LastDonationDate</td>
+
                 <td>
-                    <a href="/Donors/Edit/@item.DonorId">Edit</a> |
-                    <a href="/Donors/Details/@item.DonorId">Details</a> |
-                    <a href="/Donors/Delete/@item.DonorId">Delete</a>
+
+                    <a href="/Donors/Edit/@item.DonorId"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <a href="/Donors/Details/@item.DonorId"
+                       class="btn btn-info btn-sm">
+                        Details
+                    </a>
+
+                    <a href="/Donors/Delete/@item.DonorId"
+                       class="btn btn-danger btn-sm">
+                        Delete
+                    </a>
+
                 </td>
             </tr>
         }
+
     </tbody>
+
 </table>
-
-
-
-
-
-
 
 <hr />
 
-<h3>LINQ Features</h3>
+<h4 class="text-primary">LINQ Features</h4>
 
-<p><a href="/Donors/Filter">1. Filter by Blood Group</a></p>
+<p>
+    <a href="/Donors/Filter" class="btn btn-primary">
+        Filter by Blood Group
+    </a>
 
-<p><a href="/Donors/SortByLastDonation">2. Sort by Last Donation Date</a></p>
+    <a href="/Donors/SortByLastDonation" class="btn btn-secondary">
+        Sort by Last Donation
+    </a>
 
-<p><a href="/Donors/DonationCount">3. Donor Donation Count</a></p>
+    <a href="/Donors/DonationCount" class="btn btn-dark">
+        Donation Count
+    </a>
 
-<p><a href="/Donors/TotalBloodCollected">4. Total Blood Collected</a></p>
+    <a href="/Donors/TotalBloodCollected" class="btn btn-success">
+        Total Blood Collected
+    </a>
+</p>
