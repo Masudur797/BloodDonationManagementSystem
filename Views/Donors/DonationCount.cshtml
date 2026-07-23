@@ -1,0 +1,28 @@
+﻿@model IEnumerable<BloodDonationManagementSystem.Models.DonorDonationCount>
+
+@{
+    ViewData["Title"] = "Donation Count";
+}
+
+<h2>Donors with Total Number of Donations</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Name</th>
+        <th>Blood Group</th>
+        <th>Total Donations</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.FullName</td>
+            <td>@item.BloodGroup</td>
+            <td>@item.TotalDonations</td>
+        </tr>
+    }
+</table>
+
+<br />
+
+<a href="/Donors">Back to Donor List</a>

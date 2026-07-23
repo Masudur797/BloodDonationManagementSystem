@@ -148,5 +148,77 @@ namespace BloodDonationManagementSystem.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
+
+        // GET: Filter by Blood Group
+        public IActionResult Filter(string bloodGroup)
+        {
+            var donors = _context.Donors.AsQueryable();
+
+            if (!string.IsNullOrEmpty(bloodGroup))
+            {
+                donors = donors.Where(d => d.BloodGroup == bloodGroup);
+            }
+
+            return View(donors.ToList());
+        }
+
+
+
+
+        // GET: Sort Donors by Last Donation Date
+        public IActionResult SortByLastDonation()
+        {
+            var donors = _context.Donors
+                                 .OrderByDescending(d => d.LastDonationDate)
+                                 .ToList();
+
+            return View(donors);
+        }
+
+
+
+
+
+        // GET: Donor with Total Donations
+        public IActionResult DonationCount()
+        {
+            var data = _context.Donors
+                .Select(d => new BloodDonationManagementSystem.Models.DonorDonationCount
+                {
+                    FullName = d.FullName,
+                    BloodGroup = d.BloodGroup,
+                    TotalDonations = d.Donations.Count()
+                })
+                .ToList();
+
+            return View(data);
+        }
+
+
+
+
+        // GET: Total Blood Collected
+        public IActionResult TotalBloodCollected()
+        {
+            int totalVolume = _context.Donations
+                                      .Sum(d => d.VolumeMl ?? 0);
+
+            ViewBag.TotalVolume = totalVolume;
+
+            return View();
+        }
+
+
+
+
+
+
+
+
+
+
+
     }
 }
