@@ -13,128 +13,132 @@ namespace BloodDonationManagementSystem.Controllers
             _context = context;
         }
 
-        // GET: Donors
+        // ===========================
+        // Donor List
+        // ===========================
         public async Task<IActionResult> Index()
         {
             return View(await _context.Donors.ToListAsync());
         }
 
-        // GET: Donors/Details/5
-        public async Task<IActionResult> Details(int? donorid)
+        // ===========================
+        // Details
+        // ===========================
+        public async Task<IActionResult> Details(int? id)
         {
-            if (donorid == null)
-            {
+            if (id == null)
                 return NotFound();
-            }
 
             var donor = await _context.Donors
-                .FirstOrDefaultAsync(m => m.DonorId == donorid);
+                .FirstOrDefaultAsync(d => d.DonorId == id);
 
             if (donor == null)
-            {
                 return NotFound();
-            }
 
             return View(donor);
         }
 
-        // GET: Donors/Create
+        // ===========================
+        // Create (GET)
+        // ===========================
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Donors/Create
+        // ===========================
+        // Create (POST)
+        // ===========================
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DonorId,FullName,BloodGroup,ContactNo,City,LastDonationDate")] Donor donor)
+        public async Task<IActionResult> Create(Donor donor)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(donor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            if (string.IsNullOrWhiteSpace(donor.FullName))
+                ModelState.AddModelError("", "Full Name is required.");
 
-            return View(donor);
+            if (string.IsNullOrWhiteSpace(donor.BloodGroup))
+                ModelState.AddModelError("", "Blood Group is required.");
+
+            if (!ModelState.IsValid)
+                return View(donor);
+
+            _context.Donors.Add(donor);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Donors/Edit/5
-        public async Task<IActionResult> Edit(int? donorid)
+        // ===========================
+        // Edit (GET)
+        // ===========================
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (donorid == null)
-            {
+            if (id == null)
                 return NotFound();
-            }
 
-            var donor = await _context.Donors.FindAsync(donorid);
+            var donor = await _context.Donors.FindAsync(id);
 
             if (donor == null)
-            {
                 return NotFound();
-            }
 
             return View(donor);
         }
 
-        // POST: Donors/Edit/5
+        // ===========================
+        // Edit (POST)
+        // ===========================
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? donorid, [Bind("DonorId,FullName,BloodGroup,ContactNo,City,LastDonationDate")] Donor donor)
+        public async Task<IActionResult> Edit(int id, Donor donor)
         {
-            if (donorid != donor.DonorId)
-            {
+            if (id != donor.DonorId)
                 return NotFound();
-            }
 
-            if (ModelState.IsValid)
+            if (string.IsNullOrWhiteSpace(donor.FullName))
+                ModelState.AddModelError("", "Full Name is required.");
+
+            if (string.IsNullOrWhiteSpace(donor.BloodGroup))
+                ModelState.AddModelError("", "Blood Group is required.");
+
+            if (!ModelState.IsValid)
+                return View(donor);
+
+            try
             {
-                try
-                {
-                    _context.Update(donor);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DonorExists(donor.DonorId))
-                    {
-                        return NotFound();
-                    }
-
-                    throw;
-                }
-
-                return RedirectToAction(nameof(Index));
+                _context.Update(donor);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return View(donor);
             }
 
-            return View(donor);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Donors/Delete/5
-        public async Task<IActionResult> Delete(int? donorid)
+        // ===========================
+        // Delete (GET)
+        // ===========================
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (donorid == null)
-            {
+            if (id == null)
                 return NotFound();
-            }
 
             var donor = await _context.Donors
-                .FirstOrDefaultAsync(m => m.DonorId == donorid);
+                .FirstOrDefaultAsync(d => d.DonorId == id);
 
             if (donor == null)
-            {
                 return NotFound();
-            }
 
             return View(donor);
         }
 
-        // POST: Donors/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int? donorid)
+        // ===========================
+        // Delete (POST)
+        // ===========================
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var donor = await _context.Donors.FindAsync(donorid);
+            var donor = await _context.Donors.FindAsync(id);
 
             if (donor != null)
             {
@@ -143,11 +147,6 @@ namespace BloodDonationManagementSystem.Controllers
             }
 
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool DonorExists(int? donorid)
-        {
-            return _context.Donors.Any(e => e.DonorId == donorid);
         }
     }
 }
