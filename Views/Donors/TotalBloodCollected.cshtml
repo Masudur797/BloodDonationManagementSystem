@@ -2,12 +2,39 @@
     ViewData["Title"] = "Total Blood Collected";
 }
 
-<h2>Total Blood Collected</h2>
+<div class="container mt-5">
 
-<h3>
-    @ViewBag.TotalVolume mL
-</h3>
+    <div class="card shadow">
 
-<br />
+        <div class="card-header bg-success text-white">
+            <h3 class="text-center mb-0">
+                Total Blood Collected
+            </h3>
+        </div>
 
-<a href="/Donors">Back to Donor List</a>
+        <div class="card-body text-center">
+
+            <h5 class="mb-4">
+                Total Blood Collected from All Donations
+            </h5>
+
+            <div class="alert alert-success">
+
+                <h2 class="mb-0">
+                    @ViewBag.TotalVolume mL
+                </h2>
+
+            </div>
+
+            <br />
+
+            <a href="/Donors"
+               class="btn btn-secondary">
+                Back to Donor List
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

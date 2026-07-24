@@ -4,25 +4,66 @@
     ViewData["Title"] = "Donation Count";
 }
 
-<h2>Donors with Total Number of Donations</h2>
+<div class="container mt-5">
 
-<table border="1" cellpadding="8">
-    <tr>
-        <th>Name</th>
-        <th>Blood Group</th>
-        <th>Total Donations</th>
-    </tr>
+    <div class="card shadow">
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.FullName</td>
-            <td>@item.BloodGroup</td>
-            <td>@item.TotalDonations</td>
-        </tr>
-    }
-</table>
+        <div class="card-header bg-dark text-white">
+            <h3 class="text-center mb-0">
+                Donors with Total Number of Donations
+            </h3>
+        </div>
 
-<br />
+        <div class="card-body">
 
-<a href="/Donors">Back to Donor List</a>
+            <table class="table table-bordered table-hover table-striped text-center align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Blood Group</th>
+                        <th>Total Donations</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.FullName</td>
+
+                            <td>
+                                <span class="badge bg-danger">
+                                    @item.BloodGroup
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-success fs-6">
+                                    @item.TotalDonations
+                                </span>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+            <div class="text-center mt-4">
+
+                <a href="/Donors"
+                   class="btn btn-secondary">
+                    Back to Donor List
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

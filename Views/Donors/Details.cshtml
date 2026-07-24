@@ -4,41 +4,70 @@
     ViewData["Title"] = "Donor Details";
 }
 
-<h2>Donor Details</h2>
+<div class="container mt-5">
 
-<table border="1" cellpadding="8">
-    <tr>
-        <th>Donor ID</th>
-        <td>@Model.DonorId</td>
-    </tr>
+    <div class="card shadow">
 
-    <tr>
-        <th>Full Name</th>
-        <td>@Model.FullName</td>
-    </tr>
+        <div class="card-header bg-info text-white">
+            <h3 class="text-center mb-0">Donor Details</h3>
+        </div>
 
-    <tr>
-        <th>Blood Group</th>
-        <td>@Model.BloodGroup</td>
-    </tr>
+        <div class="card-body">
 
-    <tr>
-        <th>Contact No</th>
-        <td>@Model.ContactNo</td>
-    </tr>
+            <table class="table table-bordered table-striped">
 
-    <tr>
-        <th>City</th>
-        <td>@Model.City</td>
-    </tr>
+                <tr>
+                    <th width="35%">Donor ID</th>
+                    <td>@Model.DonorId</td>
+                </tr>
 
-    <tr>
-        <th>Last Donation Date</th>
-        <td>@Model.LastDonationDate</td>
-    </tr>
-</table>
+                <tr>
+                    <th>Full Name</th>
+                    <td>@Model.FullName</td>
+                </tr>
 
-<br />
+                <tr>
+                    <th>Blood Group</th>
+                    <td>
+                        <span class="badge bg-danger">
+                            @Model.BloodGroup
+                        </span>
+                    </td>
+                </tr>
 
-<a href="/Donors/Edit/@Model.DonorId">Edit</a> |
-<a href="/Donors">Back to List</a>
+                <tr>
+                    <th>Contact No</th>
+                    <td>@Model.ContactNo</td>
+                </tr>
+
+                <tr>
+                    <th>City</th>
+                    <td>@Model.City</td>
+                </tr>
+
+                <tr>
+                    <th>Last Donation Date</th>
+                    <td>@Model.LastDonationDate</td>
+                </tr>
+
+            </table>
+
+            <div class="text-center mt-4">
+
+                <a href="/Donors/Edit/@Model.DonorId"
+                   class="btn btn-warning">
+                    Edit
+                </a>
+
+                <a href="/Donors"
+                   class="btn btn-secondary">
+                    Back to List
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

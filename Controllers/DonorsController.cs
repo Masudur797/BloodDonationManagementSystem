@@ -13,24 +13,23 @@ namespace BloodDonationManagementSystem.Controllers
             _context = context;
         }
 
-        // ===========================
+        
         // Donor List
-        // ===========================
+       
         public async Task<IActionResult> Index()
         {
             return View(await _context.Donors.ToListAsync());
         }
 
-        // ===========================
+        
         // Details
-        // ===========================
+       
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
                 return NotFound();
 
-            var donor = await _context.Donors
-                .FirstOrDefaultAsync(d => d.DonorId == id);
+            var donor = await _context.Donors.FirstOrDefaultAsync(x => x.DonorId == id);
 
             if (donor == null)
                 return NotFound();
@@ -38,25 +37,36 @@ namespace BloodDonationManagementSystem.Controllers
             return View(donor);
         }
 
-        // ===========================
+       
         // Create (GET)
-        // ===========================
+       
         public IActionResult Create()
         {
             return View();
         }
 
-        // ===========================
+       
         // Create (POST)
-        // ===========================
+        
         [HttpPost]
         public async Task<IActionResult> Create(Donor donor)
         {
+            ModelState.Remove("Donations");
+
             if (string.IsNullOrWhiteSpace(donor.FullName))
-                ModelState.AddModelError("", "Full Name is required.");
+                ModelState.AddModelError("FullName", "Full Name is required.");
 
             if (string.IsNullOrWhiteSpace(donor.BloodGroup))
-                ModelState.AddModelError("", "Blood Group is required.");
+                ModelState.AddModelError("BloodGroup", "Blood Group is required.");
+
+            if (string.IsNullOrWhiteSpace(donor.ContactNo))
+                ModelState.AddModelError("ContactNo", "Contact Number is required.");
+
+            if (string.IsNullOrWhiteSpace(donor.City))
+                ModelState.AddModelError("City", "City is required.");
+
+            if (donor.LastDonationDate == null)
+                ModelState.AddModelError("LastDonationDate", "Last Donation Date is required.");
 
             if (!ModelState.IsValid)
                 return View(donor);
@@ -67,9 +77,8 @@ namespace BloodDonationManagementSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // ===========================
         // Edit (GET)
-        // ===========================
+        
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,20 +92,30 @@ namespace BloodDonationManagementSystem.Controllers
             return View(donor);
         }
 
-        // ===========================
         // Edit (POST)
-        // ===========================
+      
         [HttpPost]
         public async Task<IActionResult> Edit(int id, Donor donor)
         {
             if (id != donor.DonorId)
                 return NotFound();
 
+            ModelState.Remove("Donations");
+
             if (string.IsNullOrWhiteSpace(donor.FullName))
-                ModelState.AddModelError("", "Full Name is required.");
+                ModelState.AddModelError("FullName", "Full Name is required.");
 
             if (string.IsNullOrWhiteSpace(donor.BloodGroup))
-                ModelState.AddModelError("", "Blood Group is required.");
+                ModelState.AddModelError("BloodGroup", "Blood Group is required.");
+
+            if (string.IsNullOrWhiteSpace(donor.ContactNo))
+                ModelState.AddModelError("ContactNo", "Contact Number is required.");
+
+            if (string.IsNullOrWhiteSpace(donor.City))
+                ModelState.AddModelError("City", "City is required.");
+
+            if (donor.LastDonationDate == null)
+                ModelState.AddModelError("LastDonationDate", "Last Donation Date is required.");
 
             if (!ModelState.IsValid)
                 return View(donor);
@@ -114,16 +133,15 @@ namespace BloodDonationManagementSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // ===========================
+      
         // Delete (GET)
-        // ===========================
+       
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
                 return NotFound();
 
-            var donor = await _context.Donors
-                .FirstOrDefaultAsync(d => d.DonorId == id);
+            var donor = await _context.Donors.FirstOrDefaultAsync(x => x.DonorId == id);
 
             if (donor == null)
                 return NotFound();
@@ -131,9 +149,8 @@ namespace BloodDonationManagementSystem.Controllers
             return View(donor);
         }
 
-        // ===========================
         // Delete (POST)
-        // ===========================
+        
         [HttpPost]
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -149,76 +166,54 @@ namespace BloodDonationManagementSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
-        // GET: Filter by Blood Group
+       
+        // Filter
+     
         public IActionResult Filter(string bloodGroup)
         {
             var donors = _context.Donors.AsQueryable();
 
             if (!string.IsNullOrEmpty(bloodGroup))
-            {
-                donors = donors.Where(d => d.BloodGroup == bloodGroup);
-            }
+                donors = donors.Where(x => x.BloodGroup == bloodGroup);
 
             return View(donors.ToList());
         }
 
-
-
-
-        // GET: Sort Donors by Last Donation Date
+      
+        // Sort
+       
         public IActionResult SortByLastDonation()
         {
             var donors = _context.Donors
-                                 .OrderByDescending(d => d.LastDonationDate)
-                                 .ToList();
+                .OrderByDescending(x => x.LastDonationDate)
+                .ToList();
 
             return View(donors);
         }
 
-
-
-
-
-        // GET: Donor with Total Donations
+      
+        // Donation Count
+      
         public IActionResult DonationCount()
         {
             var data = _context.Donors
-                .Select(d => new BloodDonationManagementSystem.Models.DonorDonationCount
+                .Select(x => new DonorDonationCount
                 {
-                    FullName = d.FullName,
-                    BloodGroup = d.BloodGroup,
-                    TotalDonations = d.Donations.Count()
-                })
-                .ToList();
+                    FullName = x.FullName,
+                    BloodGroup = x.BloodGroup,
+                    TotalDonations = x.Donations.Count()
+                }).ToList();
 
             return View(data);
         }
 
-
-
-
-        // GET: Total Blood Collected
+        // Total Blood Collected
+       
         public IActionResult TotalBloodCollected()
         {
-            int totalVolume = _context.Donations
-                                      .Sum(d => d.VolumeMl ?? 0);
-
-            ViewBag.TotalVolume = totalVolume;
+            ViewBag.TotalVolume = _context.Donations.Sum(x => x.VolumeMl ?? 0);
 
             return View();
         }
-
-
-
-
-
-
-
-
-
-
-
     }
 }

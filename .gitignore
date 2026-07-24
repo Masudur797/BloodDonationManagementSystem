@@ -4,3 +4,76 @@ obj/
 
 *.user
 *.suo
+
+
+
+
+
+
+
+
+
+
+
+@model IEnumerable<BloodDonationManagementSystem.Models.Donor>
+
+@{
+    ViewData["Title"] = "Donor List";
+}
+
+<h2>Donor List</h2>
+
+<p>
+    <a href="/Donors/Create">Add New Donor</a>
+</p>
+
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>Donor ID</th>
+            <th>Full Name</th>
+            <th>Blood Group</th>
+            <th>Contact No</th>
+            <th>City</th>
+            <th>Last Donation Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.DonorId</td>
+                <td>@item.FullName</td>
+                <td>@item.BloodGroup</td>
+                <td>@item.ContactNo</td>
+                <td>@item.City</td>
+                <td>@item.LastDonationDate</td>
+                <td>
+                    <a href="/Donors/Edit/@item.DonorId">Edit</a> |
+                    <a href="/Donors/Details/@item.DonorId">Details</a> |
+                    <a href="/Donors/Delete/@item.DonorId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
+
+
+<hr />
+
+<h3>LINQ Features</h3>
+
+<p><a href="/Donors/Filter">1. Filter by Blood Group</a></p>
+
+<p><a href="/Donors/SortByLastDonation">2. Sort by Last Donation Date</a></p>
+
+<p><a href="/Donors/DonationCount">3. Donor Donation Count</a></p>
+
+<p><a href="/Donors/TotalBloodCollected">4. Total Blood Collected</a></p>

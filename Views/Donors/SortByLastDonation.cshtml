@@ -4,32 +4,73 @@
     ViewData["Title"] = "Sorted Donors";
 }
 
-<h2>Donors Sorted by Last Donation Date</h2>
+<div class="container mt-5">
 
-<table border="1" cellpadding="8">
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Blood Group</th>
-        <th>Contact</th>
-        <th>City</th>
-        <th>Last Donation Date</th>
-    </tr>
+    <div class="card shadow">
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.DonorId</td>
-            <td>@item.FullName</td>
-            <td>@item.BloodGroup</td>
-            <td>@item.ContactNo</td>
-            <td>@item.City</td>
-            <td>@item.LastDonationDate</td>
-        </tr>
-    }
+        <div class="card-header bg-secondary text-white">
+            <h3 class="text-center mb-0">
+                Donors Sorted by Last Donation Date
+            </h3>
+        </div>
 
-</table>
+        <div class="card-body">
 
-<br />
+            <table class="table table-bordered table-hover table-striped text-center align-middle">
 
-<a href="/Donors">Back to Donor List</a>
+                <thead class="table-secondary">
+
+                    <tr>
+                        <th>Donor ID</th>
+                        <th>Full Name</th>
+                        <th>Blood Group</th>
+                        <th>Contact No</th>
+                        <th>City</th>
+                        <th>Last Donation Date</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.DonorId</td>
+
+                            <td>@item.FullName</td>
+
+                            <td>
+                                <span class="badge bg-danger">
+                                    @item.BloodGroup
+                                </span>
+                            </td>
+
+                            <td>@item.ContactNo</td>
+
+                            <td>@item.City</td>
+
+                            <td>@item.LastDonationDate</td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+            <div class="text-center mt-4">
+
+                <a href="/Donors"
+                   class="btn btn-secondary">
+                    Back to Donor List
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
